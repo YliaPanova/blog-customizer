@@ -27,33 +27,33 @@ type ArticleParamsFormProps = {
 export const ArticleParamsForm = ({
 	currentState,
 	onApply,
+	onReset,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const formRef = useRef<HTMLDivElement>(null);
 	const [formState, setFormState] = useState<ArticleStateType>(currentState);
 
 	useEffect(() => {
+		if (!isMenuOpen) return;
+
 		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				isOpen &&
-				formRef.current &&
-				!formRef.current.contains(event.target as Node)
-			) {
-				setIsOpen(false);
+			if (formRef.current && !formRef.current.contains(event.target as Node)) {
+				setIsMenuOpen(false);
 			}
 		};
 
 		document.addEventListener('mousedown', handleClickOutside);
+
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [isOpen]);
+	}, [isMenuOpen]);
 
 	const handleToggle = () => {
-		if (!isOpen) {
+		if (!isMenuOpen) {
 			setFormState(currentState);
 		}
-		setIsOpen(!isOpen);
+		setIsMenuOpen(!isMenuOpen);
 	};
 
 	const handleFormChange = (
@@ -68,13 +68,13 @@ export const ArticleParamsForm = ({
 
 	const handleApply = () => {
 		onApply(formState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	const handleReset = () => {
 		setFormState(defaultArticleState);
-		onApply(defaultArticleState);
-		setIsOpen(false);
+		onReset();
+		setIsMenuOpen(false);
 	};
 
 	const handleFormSubmit = (e: React.FormEvent) => {
@@ -93,11 +93,11 @@ export const ArticleParamsForm = ({
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={handleToggle} />
+			<ArrowButton isOpen={isMenuOpen} onClick={handleToggle} />
 			<aside
 				ref={formRef}
 				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
+					isMenuOpen ? styles.container_open : ''
 				}`}>
 				<form
 					className={styles.form}

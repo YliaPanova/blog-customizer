@@ -4,6 +4,7 @@ import { Button } from 'src/ui/button';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
+import { Text } from 'src/ui/text';
 
 import {
 	fontFamilyOptions,
@@ -43,7 +44,6 @@ export const ArticleParamsForm = ({
 		};
 
 		document.addEventListener('mousedown', handleClickOutside);
-
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
@@ -103,6 +103,11 @@ export const ArticleParamsForm = ({
 					className={styles.form}
 					onSubmit={handleFormSubmit}
 					onReset={handleFormReset}>
+					<Text as='h2' size={31} weight={800} uppercase align='left'>
+						Задайте параметры
+					</Text>
+
+					{/* Выбор шрифта */}
 					<Select
 						title='Шрифт'
 						options={fontFamilyOptions}
@@ -115,8 +120,7 @@ export const ArticleParamsForm = ({
 						}
 					/>
 
-					<Separator />
-
+					{/* Размер шрифта */}
 					<RadioGroup
 						title='Размер шрифта'
 						name='fontSize'
@@ -130,11 +134,9 @@ export const ArticleParamsForm = ({
 						}
 					/>
 
-					<Separator />
-
-					<RadioGroup
+					{/* Цвет шрифта */}
+					<Select
 						title='Цвет шрифта'
-						name='fontColor'
 						options={fontColors}
 						selected={findOption(fontColors, formState.fontColor.value)}
 						onChange={(selected: OptionType) =>
@@ -144,9 +146,9 @@ export const ArticleParamsForm = ({
 
 					<Separator />
 
-					<RadioGroup
+					{/* Цвет фона */}
+					<Select
 						title='Цвет фона'
-						name='backgroundColor'
 						options={backgroundColors}
 						selected={findOption(
 							backgroundColors,
@@ -157,11 +159,9 @@ export const ArticleParamsForm = ({
 						}
 					/>
 
-					<Separator />
-
-					<RadioGroup
+					{/* Ширина контента */}
+					<Select
 						title='Ширина контента'
-						name='contentWidth'
 						options={contentWidthArr}
 						selected={findOption(contentWidthArr, formState.contentWidth.value)}
 						onChange={(selected: OptionType) =>
